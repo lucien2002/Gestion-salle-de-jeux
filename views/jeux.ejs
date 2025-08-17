@@ -1,0 +1,52 @@
+<%- include('partials/header') %>
+    <section>
+        <h2>Gestion des Jeux</h2>
+        
+        <form action="/jeux/ajouter" method="POST" class="form">
+            <h3>Ajouter un jeu</h3>
+            <div class="form-group">
+                <label for="nom">Nom du jeu:</label>
+                <input type="text" id="nom" name="nom" required>
+            </div>
+            <div class="form-group">
+                <label for="prix">Prix par minute (AR):</label>
+                <input type="number" id="prix" name="prix" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea id="description" name="description"></textarea>
+            </div>
+            <button type="submit">Ajouter</button>
+        </form>
+
+        <div class="table-container">
+            <h3>Liste des jeux</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nom</th>
+                        <th>Prix/minute</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% jeux.forEach(jeu => { %>
+                        <tr>
+                            <td><%= jeu.id %></td>
+                            <td><%= jeu.nom %></td>
+                            <td><%= jeu.prix_par_minute %> AR</td>
+                            <td><%= jeu.description %></td>
+                            <td>
+                                <form action="/jeux/supprimer/<%= jeu.id %>" method="POST" class="inline-form">
+                                    <button type="submit" class="btn-danger">Supprimer</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </section>
+<%- include('partials/footer') %>

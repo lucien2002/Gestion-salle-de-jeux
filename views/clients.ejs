@@ -1,0 +1,76 @@
+<%- include('partials/header') %>
+    <section>
+        <h2>Gestion des Clients</h2>
+        
+        <form action="/clients/ajouter" method="POST" class="form">
+            <h3>Ajouter un client</h3>
+            <div class="form-group">
+                <label for="nom">Nom:</label>
+                <input type="text" id="nom" name="nom" required>
+            </div>
+            <div class="form-group">
+                <label for="prenom">Prénom:</label>
+                <input type="text" id="prenom" name="prenom" required>
+            </div>
+            <div class="form-group">
+                <label for="solde">Solde (AR):</label>
+                <input type="number" id="solde" name="solde" step="0.01" required>
+            </div>
+            <button type="submit">Ajouter</button>
+        </form>
+
+        <div class="table-container">
+            <h3>Liste des clients</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th>Solde</th>
+                        <th>Jeu</th>
+                        <th>Temps restant</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% clients.forEach(client => { %>
+                        <tr data-client-id="<%= client.id %>">
+                            <td><%= client.id %></td>
+                            <td><%= client.nom %></td>
+                            <td><%= client.prenom %></td>
+                            <td><%= client.solde %> AR</td>
+                            <td><%= client.jeu_nom || 'Aucun' %></td>
+                            <td>
+                                <% if (client.temps_restant) { %>
+                                    <span class="timer" data-minutes="<%= client.temps_restant %>" 
+                                          data-start="<%= new Date(client.date_debut).getTime() %>">
+                                        <%= client.temps_restant %> min
+                                    </span>
+                                <% } else { %>
+                                    -
+                                <% } %>
+                            </td>
+                            <td>
+                                <% if (!client.jeu_id) { %>
+                                    <form action="/clients/commencer-jeu/<%= client.id %>" method="POST" class="inline-form">
+                                        <select name="jeu_id" required>
+                                            <option value="">Choisir un jeu</option>
+                                            <% jeux.forEach(jeu => { %>
+                                                <option value="<%= jeu.id %>"><%= jeu.nom %> (<%= jeu.prix_par_minute %> AR/min)</option>
+                                            <% }); %>
+                                        </select>
+                                        <button type="submit">Commencer</button>
+                                    </form>
+                                <% } %>
+                                <form action="/clients/supprimer/<%= client.id %>" method="POST" class="inline-form">
+                                    <button type="submit" class="btn-danger">Supprimer</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </section>
+<%- include('partials/footer') %>

@@ -1,0 +1,19 @@
+<%- include('partials/header') %>
+    <section class="hero">
+        <h2>Bienvenue dans notre salle de jeux</h2>
+        <p>Gérez facilement vos clients et vos jeux</p>
+    </section>
+
+    <section class="jeux-list">
+        <h3>Nos jeux disponibles</h3>
+        <div class="jeux-grid">
+            <% jeux.forEach(jeu => { %>
+                <div class="jeu-card">
+                    <h4><%= jeu.nom %></h4>
+                    <p><%= jeu.prix_par_minute %> AR/minute</p>
+                    <p><%= jeu.description %></p>
+                </div>
+            <% }); %>
+        </div>
+    </section>
+<%- include('partials/footer') %>
